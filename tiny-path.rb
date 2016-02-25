@@ -190,6 +190,7 @@ end
 def print_progress(current_pixel, pixel_count)
   if (current_pixel % (pixel_count / 100)) == 0
     percent = (current_pixel / pixel_count.to_f * 100).round(2)
+    print "\r\e[A\e[K" if percent > 0
     puts "%3i%% complete" % percent
   end
 end
