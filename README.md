@@ -1,7 +1,7 @@
 # Tiny Path
 A tiny, one-file, Monte Carlo path tracer written in a few hundred lines of Ruby. The source accompanied a short talk I gave as an introduction to Ray Tracing (presentation slides available [here](https://github.com/JVillella/tiny-path/blob/master/assets/intro-to-ray-tracing.pdf)). The hope is that it provides a simple to understand example. The image below is the rendered output at 16spp.
 
-![](https://raw.githubusercontent.com/JVillella/tiny-path/master/assets/output-64spp.png)
+![](https://raw.githubusercontent.com/JVillella/tiny-path/master/assets/output-1024spp.png)
 
 ## Features
 * Monte Carlo method
