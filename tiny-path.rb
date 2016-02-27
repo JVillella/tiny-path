@@ -1,7 +1,7 @@
 require 'matrix'
 require 'optparse'
 require 'chunky_png'
-# require 'byebug'
+require 'byebug'
 
 Point = Col = Vec = Vector # alias
 
