@@ -8,6 +8,7 @@ Point = Col = Vec = Vector # alias
 EPSILON = 0.0001
 INVERTED_PI = 1.0 / Math::PI; TWO_PI = 2 * Math::PI
 MAX_DEPTH = 2
+CLEAR = "\r\e[K"
 
 class Numeric
   def clamp(min=0, max=1)
@@ -38,7 +39,7 @@ class Camera
   def spawn_ray(x, y)
     dir = @u * x + @v * y - @w * @view_dist
     Ray.new(@eye, dir.normalize)
-  end  
+  end
 end
 
 class Mat
@@ -190,8 +191,8 @@ end
 def print_progress(current_pixel, pixel_count)
   if (current_pixel % (pixel_count / 100)) == 0
     percent = (current_pixel / pixel_count.to_f * 100).round(2)
-    print "\r\e[A\e[K" if percent > 0
-    puts "%3i%% complete" % percent
+    print CLEAR + "%3i%% complete" % percent
+    STDOUT.flush
   end
 end
 
@@ -241,4 +242,4 @@ PROGRESSIVE_SAVING = args[:prog_save]
 start_time = Time.now
 puts "Rendering #{args[:w]}x#{args[:h]}"
 save_image(render(args[:w], args[:h], args[:spp]), FILENAME)
-puts "Render completed in %.2f seconds" % (Time.now - start_time)
+puts CLEAR + "Render completed in %.2f seconds" % (Time.now - start_time)
