@@ -3,18 +3,33 @@ require 'optparse'
 require 'chunky_png'
 require 'byebug'
 
-Point = Col = Vec = Vector # alias
+# Fix bug with Ruby pre-2.1.3 where cross product calculations were broken.
+# See https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=761405 for context.
+module VectorCrossProductFix
+  def cross_product(v)
+    Vector.Raise ErrDimensionMismatch unless size == v.size && v.size == 3
+    Vector[@elements[1]*v[2] - @elements[2]*v[1],
+           @elements[2]*v[0] - @elements[0]*v[2],
+           @elements[0]*v[1] - @elements[1]*v[0]]
+  end
+end
 
-EPSILON = 0.0001
-INVERTED_PI = 1.0 / Math::PI; TWO_PI = 2 * Math::PI
-MAX_DEPTH = 2
-CLEAR = "\r\e[K"
+class Vector
+  prepend VectorCrossProductFix
+end
 
 class Numeric
   def clamp(min=0, max=1)
     self < min ? min : self > max ? max : self
   end
 end
+
+Point = Col = Vec = Vector # alias
+
+EPSILON = 0.0001
+INVERTED_PI = 1.0 / Math::PI; TWO_PI = 2 * Math::PI
+MAX_DEPTH = 2
+CLEAR = "\r\e[K"
 
 class Ray
   attr_accessor :org, :dir
@@ -32,12 +47,12 @@ class Camera
     @eye, @focal, @view_dist, @up = eye, focal, view_dist, up
   end
   def calc_orthonormal_basis
-    @w = (@eye - @focal).normalize # right-hand coordinate system
+    @w = (@focal - @eye).normalize # right-hand coordinate system
     @u = @up.cross_product(@w).normalize
     @v = @w.cross_product(@u) # already normalized
   end
   def spawn_ray(x, y)
-    dir = @u * x + @v * y - @w * @view_dist
+    dir = @u * x + @v * y + @w * @view_dist
     Ray.new(@eye, dir.normalize)
   end
 end
