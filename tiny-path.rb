@@ -164,10 +164,10 @@ def render(width, height, spp)
 
   inv_pixel_count = 1.0 / (width * height)
   i = 0
-  for y in 0..(height - 1)
-    for x in 0..(width - 1)
+  (0...height).each do |y|
+    (0...width).each do |x|
       pixel = Col[0,0,0]
-      for s in 0..(spp - 1)
+      (0...spp).each do
         sx = (x + Random.rand) - (width  * 0.5)
         sy = (y + Random.rand) - (height * 0.5)
         pixel += radiance(CAMERA.spawn_ray(sx, sy)) * spp_inv
@@ -200,8 +200,8 @@ def save_image(image_data, filename)
   height = image_data.length
   width = image_data[0].length
   png = ChunkyPNG::Image.new(width, height, ChunkyPNG::Color::BLACK)
-  for y in 0..(height - 1)
-    for x in 0..(width - 1)
+  (0...height).each do |y|
+    (0...width).each do |x|
       p = image_data[y][x]
       png[x, y] = ChunkyPNG::Color.rgba(gamma(p[0]), gamma(p[1]), gamma(p[2]), 255)
     end
