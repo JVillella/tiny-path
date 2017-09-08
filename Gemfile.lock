@@ -1,0 +1,15 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    byebug (8.2.2)
+    chunky_png (1.3.5)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  byebug (~> 8.2.2)
+  chunky_png (~> 1.3.5)
+
+BUNDLED WITH
+   1.11.2
